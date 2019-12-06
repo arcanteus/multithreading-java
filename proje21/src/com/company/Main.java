@@ -17,7 +17,7 @@ public class Main extends  JFrame {
     static JProgressBar mainbar;
 
     public static void main(String[] args) {
-        f = new JFrame("ProgressBar demo");
+        f = new JFrame("YazLab 2-1 Proje - Live ProgressBar");
         p = new JPanel();
 
 
@@ -90,14 +90,18 @@ class eraserThread extends  Main{
                 double percent = (subTs.get(i).istek/(double)subTs.get(i).kapasite)*100;
                 if (percent >70){
                     subThread sub=new subThread();
+                    int a=subTs.get(i).istek/2;
+                    subTs.get(i).istek=a;
                     sub.run();
                     sub.ekle();
+                    sub.istek=a;
                     subTs.add(sub);
 
 
                 }if (subTs.get(i).istek<=0){
                     if(subTs.size()>2){
                     subTs.get(i).tmer.cancel();
+                    subTs.get(i).tmer.purge();
                     p.remove(subTs.get(i).bar);
                     f.invalidate();
                     f.validate();
@@ -129,7 +133,7 @@ class subThread extends  Main{
 
         @Override
         public void run() {
-            int request=randomnum.nextInt()%100+1;
+            int request=randomnum.nextInt(250);
             if(Main.mT.istek-request<0){
                 request=Main.mT.istek;
                 Main.mT.istek=0;
@@ -149,7 +153,7 @@ class subThread extends  Main{
 
         @Override
         public void run() {
-            int request=randomnum.nextInt()%50+1;
+            int request=randomnum.nextInt(50);
             if(istek-request<0){
                 istek=0;
             }else {
@@ -161,8 +165,8 @@ class subThread extends  Main{
     };
     public void run(){
 
-        tmer.schedule(task1, 0, 50);
-        tmer.schedule(task2, 0, 30);
+        tmer.schedule(task1, 0, 500);
+        tmer.schedule(task2, 0, 300);
     }
 
 
@@ -186,7 +190,7 @@ class mainThread extends Main {
 
         @Override
         public void run() {
-            int request=randomnum.nextInt()%500+1;
+            int request=randomnum.nextInt(500);
             if(istek+request>kapasite){
                 istek=kapasite;
             }else {
@@ -200,7 +204,7 @@ class mainThread extends Main {
 
         @Override
         public void run() {
-            int request=randomnum.nextInt()%100+1;
+            int request=randomnum.nextInt(100);
             if(istek-request<0){
                 istek=0;
             }else {
@@ -212,8 +216,9 @@ class mainThread extends Main {
     };
     public void run(){
 
-        tmer.schedule(task1, 0, 50);
-        tmer.schedule(task2, 0, 30);
+        tmer.schedule(task1, 0, 500);
+        tmer.schedule(task2, 0, 200);
+        //tmer.scheduleAtFixedRate();
     }
 
 
